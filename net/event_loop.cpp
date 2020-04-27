@@ -30,6 +30,7 @@ void EventLoop::init()
 
 void EventLoop::loop()
 {
+	init();
 	//
 	_quit = false;
 	_looping = true;
@@ -55,8 +56,8 @@ void EventLoop::loop()
 		{
 			functors[i]();
 		}
-
 	}
+	_looping = false;
 }
 
 void EventLoop::setHandle(std::shared_ptr<BaseHandle> handle)

@@ -65,9 +65,10 @@ int SocketServer::handle_accept()
 		_socket_new_cb(sapper);
 	}
 
-	sapper->focusRead();
 	Sapper::CallBackHandler cbr = std::bind(&SocketServer::handle_receive, this, sapper);
 	sapper->setReadHandler(cbr);
+	sapper->focusRead();
+	
 	return 0;
 }
 
