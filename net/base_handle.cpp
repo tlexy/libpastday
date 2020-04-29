@@ -15,9 +15,13 @@ BaseHandle::~BaseHandle()
 {}
 
 ///--------------------------------------------------------------
+
+BinaryPacketHandle::BinaryPacketHandle()
+{}
+
 void BinaryPacketHandle::handle(std::vector<SapperPtr>& active_sapper)
 {
-    std::vector<SimpleBuffer> vecs;
+    std::vector<BaseSession> vecs;
     for (int i = 0; i < active_sapper.size(); ++i)
     {
         if (!active_sapper[i]->isReadEvent() || !active_sapper[i]->isPostRead())
@@ -30,7 +34,10 @@ void BinaryPacketHandle::handle(std::vector<SapperPtr>& active_sapper)
             //即收到了一个包
             SimpleBuffer buffer = std::make_shared<std::string>();
             active_sapper[i]->readBuffer(*buffer.get(), ret);
-            vecs.push_back(buffer);
+            BaseSession sess;
+            sess.buffer = buffer;
+            sess.sapper = active_sapper[i];
+            vecs.push_back(sess);
         }
     }
     handlePacket(vecs);
@@ -42,7 +49,7 @@ size_t BinaryPacketHandle::getPacket(BufferPtr buffer)
 }
 
 //handlePacket还跑在io线程中，强烈建议将包分发到业务线程中进行处理，不要阻障io线程收发包
-void BinaryPacketHandle::handlePacket(const std::vector<SimpleBuffer>& packets)
+void BinaryPacketHandle::handlePacket(const std::vector<BaseSession>& packets)
 {
     //包里还差个fd呀
 }

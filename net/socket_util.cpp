@@ -28,6 +28,11 @@ namespace SocketUtil
 		exit(1);
 	}
 
+	void printErr(int erno)
+	{
+		printf("Error: %d, %s\n", erno, strerror(erno));
+	}
+
 	int Socket(int family, int type, int protocol, bool nonblock)
 	{
 		int n;
@@ -153,7 +158,7 @@ namespace SocketUtil
 	{
 		ssize_t n;
 	again:
-		if ((n = write(fd, buf, nbytes) < 0))
+		if ((n = write(fd, buf, nbytes)) < 0)
 		{
 			if (errno == EINTR)
 			{

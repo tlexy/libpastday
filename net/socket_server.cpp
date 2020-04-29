@@ -68,7 +68,7 @@ int SocketServer::handle_accept()
 	Sapper::CallBackHandler cbr = std::bind(&SocketServer::handle_receive, this, sapper);
 	sapper->setReadHandler(cbr);
 	sapper->focusRead();
-	
+
 	return 0;
 }
 
@@ -86,6 +86,10 @@ int SocketServer::handle_receive(SapperPtr sapper)
 			sapper->readBuffer(*buffer.get(), len);
 			_socket_read_cb(sapper, buffer);
 			sapper->setPostRead(false);
+		}
+		else 
+		{
+			sapper->setPostRead(true);
 		}
 	}
 	if (len <= 0)
@@ -148,7 +152,7 @@ void SocketServer::send(SapperPtr sapper, const char* buff, size_t len)
 	BufferPtr ptr(buff, len);
 	sapper->setWriteHandler(std::bind(&SocketServer::handle_write, this, sapper, ptr));
 	sapper->focusWrite();
-	sapper->loopPtr()->wakeUp();
+	//sapper->loopPtr()->wakeUp();
 }
 
 void SocketServer::init()

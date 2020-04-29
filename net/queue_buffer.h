@@ -167,7 +167,7 @@ public:
 	{
 		assert(len <= readableBytes());
 		//std::string result(peek(), len);
-		for (char* ch = (char*)peek(); ch <= peek() + len; ++ch)
+		for (char* ch = (char*)peek(); ch < peek() + len; ++ch)
 		{
 			out_str.push_back(*ch);
 		}
