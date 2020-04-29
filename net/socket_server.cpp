@@ -149,10 +149,26 @@ void SocketServer::send(SapperPtr sapper, const char* buff, size_t len)
 	{
 		return ;
 	}
-	BufferPtr ptr(buff, len);
+	//BufferPtr ptr(buff, len);
+	//async_write(sapper, ptr);
+	SimpleBuffer buffer = std::make_shared<std::string>(buff, len);
+	send(sapper, buffer);
+}
+
+void SocketServer::send(SapperPtr sapper, SimpleBuffer buffer)
+{
+	if (buffer->size() <= 0)
+	{
+		return ;
+	}
+	BufferPtr ptr(buffer);
+	async_write(sapper, ptr);
+}
+
+void SocketServer::async_write(SapperPtr sapper, BufferPtr ptr)
+{
 	sapper->setWriteHandler(std::bind(&SocketServer::handle_write, this, sapper, ptr));
 	sapper->focusWrite();
-	//sapper->loopPtr()->wakeUp();
 }
 
 void SocketServer::init()

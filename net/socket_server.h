@@ -42,9 +42,13 @@ public:
 	void set_write_handle(WriteFunctor);
 
 	void send(SapperPtr, const char* buff, size_t len);
+	void send(SapperPtr, SimpleBuffer);
 	
 	void async_start();
 	void stop();
+
+private:
+	void async_write(SapperPtr, BufferPtr);
 
 protected:
 	void init();//Add event fd for wake up.

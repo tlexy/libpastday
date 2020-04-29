@@ -12,6 +12,13 @@ void BufferPtr::setBuffer(const void* buff, size_t len)
     _len = len;
 }
 
+BufferPtr::BufferPtr(SimpleBuffer buffer)
+    :_buff(buffer->c_str()),
+    _len(buffer->size()),
+    _s_buff(buffer)
+{
+}
+
 BufferPtr::~BufferPtr()
 {
 }

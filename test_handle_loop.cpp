@@ -23,7 +23,7 @@ public:
 		for (int i = 0; i < packets.size(); ++i)
 		{
 			std::cout << "fd: " << packets[i].sapper->fd() << ", receive data: " << packets[i].buffer->c_str() << std::endl;
-			_server->send(packets[i].sapper, packets[i].buffer->c_str(), packets[i].buffer->size());
+			_server->send(packets[i].sapper, packets[i].buffer);
 		}
 	}
 
